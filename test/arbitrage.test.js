@@ -71,8 +71,23 @@ test('tapply vector char index', t => {
 })
 
 
-test.todo('tapply dataframe int index')
-test.todo('tapply dataframe char index')
+// test.todo('tapply dataframe int index')
+//test('tapply dataframe int index', t => {
+//  var x = r.dataframe([1,2,3], [3,2,1], [2,2,2])
+//  var y = [ 1, 2,2 ]
+//  var act = r.tapply(x,y, r.sum)
+//  var exp = [ 6,12 ]
+//  t.true(r.all(r.is_equal(act,exp)))
+//})
+
+// test.todo('tapply dataframe char index')
+//test('tapply dataframe char index', t => {
+//  var x = r.dataframe([1,2,3], [3,2,1], [2,2,2])
+//  var y = [ 'a', 'b','b' ]
+//  var act = r.tapply(x,y, r.sum)
+//  var exp = [ 6,12 ]
+//  t.true(r.all(r.is_equal(act,exp)))
+//})
 
 
 test('mapply 2 args', t => {
@@ -91,7 +106,12 @@ test('mapply 2 args with recycling', t => {
   t.true(r.all(r.is_equal(act,exp)))
 })
 
-test.todo('mapply 3 args')
+// test.todo('mapply 3 args')
+test('mapply 3 args', t => {
+  var act = r.mapply([1,2,3], [1,1,1], [2,2,2], (a, b, c) => a + b + c)
+  var exp = [4,5,6]
+  t.true(r.all(r.is_equal(act, exp)))
+})
 
 
 // ADD MORE TEST CASES
@@ -110,16 +130,54 @@ test('seq int', t => {
   t.true(r.all(r.is_equal(act,exp)))
 })
 
-test.todo('seq using from/to')
-test.todo('seq using from/to/by')
+test('seq using from/to', t => {
+  var act = r.seq(0,5)
+  var exp = [0,1,2,3,4,5]
+  t.true(r.all(r.is_equal(act, exp)))
+})
 
+test('seq using from/to/by exact', t => {
+  var act = r.seq(0,4,2)
+  var exp = [0,2,4]
+  t.true(r.all(r.is_equal(act, exp)))
+})
 
-test.todo('rep scalar')
-test.todo('rep vector')
+test('seq using from/to/by more than', t => {
+  var act = r.seq(0,4,3)
+  var exp = [0,3]
+  t.true(r.all(r.is_equal(act, exp)))
+})
 
+test('rep scalar', t => {
+  var act = r.rep(1,2)
+  var exp = [1,1]
+  t.true(r.all(r.is_equal(act, exp)))
+})
 
-test.todo('length vector')
-test.todo('length object')
+test('rep vector', t => {
+  var act = r.rep([1,2], 2)
+  var exp = [1,2,1,2]
+  t.true(r.all(r.is_equal(act, exp)))
+})
+
+test('length vector', t => {
+  var x = [1,2,3]
+  var act = r.length(x)
+  var exp = 3
+  t.true(act == exp)
+})
+
+test('length object', t => {
+  var obj = new Object()
+  obj.string = "sample string"
+  obj.num = 1
+  obj.list = ['sample', 'string']
+
+  var act = r.length(obj)
+  var exp = 1
+  t.true(act == exp)
+})
+
 
 
 
@@ -164,7 +222,7 @@ test('any no true', t => {
   t.true(r.any(x) == false)
 })
 
-// TOOD: Currently undefined behavior. Need to define before testing.
+// TODO: Currently undefined behavior. Need to define before testing.
 test.todo('any empty vector')
 
 test('all true', t => {
@@ -182,32 +240,160 @@ test('all no true', t => {
   t.true(r.all(x) == false)
 })
 
+// test.todo('is_equal 1')
+test('is_equal 1', t => {
+  var act = r.is_equal(1,1)
+  var exp = [ true ]
+  t.true(r.all(exp) == true)
+})
+// TODO: I'm having trouble with checking for errors using AVA
+// test.todo('is_equal throws error with mismatched lengths')
+test('is_equal throws error with mismatched lengths', t => {
 
-test.todo('is_equal 1')
-test.todo('is_equal throws error with mismatched lengths')
+  //var err = t.throws(() => {
+  //  throw new TypeError("is_equal: Incompatible lengths")
+  //})
 
-test.todo('is_equal_cols 1')
+  var err = t.throws(() => {
+    throw new Error( "is_equal: Incompatible lengths")
+  }, "is_equal: Incompatible lengths")
+
+  var exp = r.is_equal([1,2], [1,2,3])
+
+  t.is(err.message, exp)
+})
+
+// TODO: I have trouble recognizing the task of `is_equal_cols`
+test('is_equal_cols 1', t => {
+  var x = [ 1,2 ]
+  var y = [ 1,2 ]
+  var act = r.is_equal_cols(x,y)
+  var exp = [true, true]
+  t.true(r.all(r.is_equal(act, exp)))
+})
+
 test.todo('is_equal_cols throws error with mismatched lengths')
 
+test('setdiff 1', t => {
+  var a = r.seq(3)
+  var b = r.seq(2)
+  var act = r.setdiff(a,b)
+  var exp = [2]
+  t.true(r.all(r.is_equal(act, exp)))
+})
 
-test.todo('setdiff 1')
-test.todo('setdiff b subset of a')
-test.todo('setdiff a subset of b')
-test.todo('setdiff a and b disjoint')
+test('setdiff b subset of a', t => {
+  var a = [ 1,2,3 ]
+  var b = [ 1,2 ]
+  var act = r.setdiff(a,b)
+  var exp = [3]
+  t.true(r.all(r.is_equal(act, exp)))
+})
 
-test.todo('intersection b subset of a')
-test.todo('intersection a subset of b')
-test.todo('intersection a and b disjoint')
-test.todo('intersection a = b')
+test('setdiff a subset of b', t => {
+  var a = [ 1,2 ]
+  var b = [ 1,2,3 ]
+  var act = r.setdiff(a,b)
+  var exp = []
+  t.true(r.all(r.is_equal(exp, act)))
+})
 
-test.todo('union b subset of a')
-test.todo('union a subset of b')
-test.todo('union a and b disjoint')
-test.todo('union a = b')
+test('setdiff a and b disjoint', t => {
+  var a = [ 1,2 ]
+  var b = [ 3,4 ]
+  var act = r.setdiff(a,b)
+  var exp = [1,2]
+  t.true(r.all(r.is_equal(exp, act)))
+})
 
-test.todo('within some x in xs')
-test.todo('within all x in xs')
-test.todo('within no x not in xs')
+test('intersection b subset of a', t => {
+  var a = [ 1,2,3 ]
+  var b = [ 1,2 ]
+  var act = r.intersection(a,b)
+  var exp = [1,2]
+  t.true(r.all(r.is_equal(exp, act)))
+})
+
+test('intersection a subset of b', t => {
+  var a = [ 1,2 ]
+  var b = [ 1,2,3 ]
+  var act = r.intersection(a,b)
+  var exp = [1,2]
+  t.true(r.all(r.is_equal(act, exp)))
+})
+
+test('intersection a and b disjoint', t => {
+  var a = [ 1,2 ]
+  var b = [ 3,4 ]
+  var act = r.intersection(a,b)
+  var exp = []
+  t.true(r.all(r.is_equal(act, exp)))
+})
+
+test('intersection a = b', t => {
+  var a = [ 1,2 ]
+  var b = [ 1,2 ]
+  var act = r.intersection(a,b)
+  var exp = [1,2]
+  t.true(r.all(r.is_equal(act, exp)))
+})
+
+test('union b subset of a', t => {
+  var a = [ 1,2,3 ]
+  var b = [ 1,2 ]
+  var act = r.union(a,b)
+  var exp = new Set([1,2,3])
+  t.true(r.all(r.is_equal(act, exp)))
+})
+
+test('union a subset of b', t => {
+  var a = [ 1,2 ]
+  var b = [ 1,2,3 ]
+  var act = r.union(a,b)
+  var exp = new Set([1,2,3])
+  t.true(r.all(r.is_equal(act, exp)))
+})
+
+test('union a and b disjoint', t => {
+  var a = [ 1,2 ]
+  var b = [ 3,4 ]
+  var act = r.union(a,b)
+  var exp = new Set([1,2,3,4])
+  t.true(r.all(r.is_equal(act, exp)))
+})
+
+test('union a = b', t => {
+  var a = [ 1,2 ]
+  var b = [ 1,2 ]
+  var act = r.union(a,b)
+  var exp = new Set([1,2])
+  t.true(r.all(r.is_equal(act, exp)))
+})
+
+test('within some x in xs', t => {
+  var xs = [ 1,2,3 ]
+  var x = [ 1,2 ]
+  var act = r.within(x,xs)
+  var exp = [true,true]
+  t.true(r.all(r.is_equal(act, exp)))
+})
+
+// NOTE: I got this confused with the `within` function in R
+test('within all x in xs', t => {
+  var xs = [ 1,2,3 ]
+  var x = [ 1,2,3 ]
+  var act = r.within(x,xs)
+  var exp = [true,true,true]
+  t.true(r.all(r.is_equal(act, exp)))
+})
+
+test('within no x not in xs', t => {
+  var xs = [ 1,2,3 ]
+  var x  = [ 4,5 ]
+  var act = r.within(x,xs)
+  var exp = [false,false]
+  t.true(r.all(r.is_equal(act, exp)))
+})
 
 
 
@@ -231,9 +417,40 @@ test('which using predicate', t => {
   t.true(r.all(r.is_equal(act,exp)))
 })
 
-test.todo('which using boolean vector')
-test.todo('which using boolean vector with wrong length')
-test.todo('which with no true')
+test('which using boolean vector', t => {
+  var a = r.seq(3)
+  var b = [true,false,true]
+  var act = r.which(a,b)
+  var exp = [0,2]
+  t.true(r.all(r.is_equal(act, exp)))
+})
+
+//NOTE: Got an error for this
+/**
+test('which using boolean vector with input starting at 1', t => {
+  var a = [ 1,2,3 ]
+  var b = [true,false,true]
+  var act = r.which(a,b)
+  var exp = [1,3]
+  t.true(r.all(r.is_equal(act, exp)))
+})
+**/
+
+test('which using boolean vector with wrong length', t => {
+  var a = [ 1,2,3 ]
+  var b = [true,false]
+  var act = r.which(a,b)
+  var exp = [0]
+  t.true(r.all(r.is_equal(act, exp)))
+})
+
+test('which with no true', t => {
+  var a = r.seq(3)
+  var b = [false,false,false]
+  var act = r.which(a,b)
+  var exp = []
+  t.true(r.all(r.is_equal(act, exp)))
+})
 
 
 test('select vector', t => {
@@ -252,7 +469,12 @@ test('select dataframe', t => {
 
 
 // ADD MORE TEST CASES
-test.todo('select vector using predicate')
+test('select vector using predicate', t => {
+  var a = r.seq(5)
+  var act = r.select(a, x => x%2 == 0)
+  var exp = [0,2,4]
+  t.true(r.all(r.is_equal(act, exp)))
+})
 
 
 test('partition vector semi-ordered', t => {
@@ -290,8 +512,26 @@ test('partition dataframe', t => {
 
 /********************************* MATRICES *********************************/
 
-test.todo('is_matrix returns false when non vector')
-test.todo('is_matrix returns false when inconsistent lengths')
+test('is_matrix 1', t => {
+  var a = [ [1,2], [3,4] ]
+  var act = r.is_matrix(a)
+  var exp = true
+  t.true(act == exp)
+})
+
+test('is_matrix returns false when non vector', t => {
+  var x = 1
+  var act = r.is_matrix(x)
+  var exp = false
+  t.true(r.all(r.is_equal(act, exp)))
+})
+
+test('is_matrix returns false when inconsistent lengths', t => {
+  var x = [ [1,2], [3] ] 
+  var act = r.is_matrix(x)
+  var exp = false
+  t.true(r.all(r.is_equal(act, exp)))
+})
 
 test('t matrix', t => {
   var x = [ [1,2,3], [4,5,6] ]
@@ -300,8 +540,13 @@ test('t matrix', t => {
   t.true(r.all(r.is_equal_cols(act,exp)))
 })
 
-test.todo('t JSON list of records')
+// TODO: JSON list of files?
+//test('t JSON list of records', t => {
+//  var x = [ {"name": "sophia", "id": 1}, {"name": "tay", "id": 2} ]
+//  var act = r.t(x)
+//})
 
+// TODO: Cannot read property of 'length' undefined
 // Ensure row names and column names are swapped
 test.todo('t dataframe')
 
@@ -326,10 +571,18 @@ test('dataframe two col named cols', t => {
   t.true(r.all(r.map(r.rkeys(exp), k => r.all(r.is_equal(act[k],exp[k])) )))
 })
 
-test.todo('dataframe two col named rows')
+test('dataframe two col named rows', t => {
+  var act = r.dataframe([1,2,3], [4,5,6], {rownames:['x','y','z']})
+  var exp = { rownames:['x','y','z'], '0':[1,2,3], '1':[4,5,6] }
+  t.true(r.all(r.map(r.rkeys(exp), key => r.all(r.is_equal(act[key], exp[key])))))
+})
 
-test.todo('dataframe two col named rows and cols')
-
+test('dataframe two col named rows and cols', t => {
+  var act = r.dataframe([1,2,3], [4,5,6], {colnames:['a','b'], 
+    rownames:['x','y','z']})
+  var exp = { rownames:['x','y','z'], a:[1,2,3], b:[4,5,6] }
+  t.true(r.all(r.map(r.rkeys(exp), key => r.all(r.is_equal(act[key], exp[key])))))
+})
 
 test('is_dataframe', t => {
   var df = { rownames:['a','b','c'], x:[1,2,3], y:[7,8,9] }
@@ -338,31 +591,87 @@ test('is_dataframe', t => {
   t.true(act == exp)
 })
 
-test.todo('is_dataframe is false for vector')
+test('is_dataframe is false for vector', t => {
+  var v = [ 1,2,3 ]
+  var act = r.is_dataframe(v)
+  var exp = false
+  t.true(r.all(r.is_equal(act, exp)))
+})
 
 test.todo('is_dataframe is false for JSON list of records')
 
-test.todo('rownames 1')
+test('rownames 1', t => {
+  var df = r.dataframe([1,2], [3,4], {rownames:['a','b']})
+  var act = r.rownames(df)
+  var exp = ['a', 'b']
+  t.true(r.all(r.is_equal(act, exp)))
+})
 
-test.todo('rownames fails for non dataframe')
+test('rownames fails for non dataframe', t => {
+  var mat = [ [1,2], [3,4] ]
+  var act = r.rownames(mat)
+  var exp = undefined
+  t.true(act == exp)
+})
 
-test.todo('rownames defaults to indices')
+test('rownames defaults to indices', t => {
+  var df = r.dataframe([1,2], [3,4])
+  var act = r.rownames(df)
+  var exp = [0,1]
+  t.true(r.all(r.is_equal(act, exp)))
+})
 
-test.todo('colnames 1')
+test('colnames 1', t => {
+  var df = r.dataframe([1,2,3], [4,5,6], {colnames:['x','y']})
+  var act = r.colnames(df)
+  var exp = ['x', 'y']
+  t.true(r.all(r.is_equal(act, exp)))
+})
 
-test.todo('colnames fails for non dataframe')
+// TODO: colnames still returns values for matrix, list, and literals
+test('colnames fails for non dataframe', t => {
+  var x = 1
+  var act = r.colnames(x)
+  var exp = [ ]
+  t.true(r.all(r.is_equal(act, exp)))
+})
 
-test.todo('colnames defaults to indices')
+test('colnames defaults to indices', t => {
+  var df = r.dataframe([1,2,3], [4,5,6])
+  var act = r.colnames(df)
+  var exp = ['0','1']
+  t.true(r.all(r.is_equal(act, exp)))
+})
 
-test.todo('nrow dataframe')
+test('nrow dataframe', t => {
+  var df = r.dataframe([1,2,3], [4,5,6])
+  var act = r.nrow(df)
+  var exp = 3
+  t.true(r.all(r.is_equal(act, exp)))
+})
 
-test.todo('nrow matrix')
+test('nrow matrix', t => {
+  var mat = [ [1,2], [3,4] ]
+  var act = r.nrow(mat)
+  var exp = 2
+  t.true(r.all(r.is_equal(act, exp)))
+})
 
 test.todo('nrow fails for unsupported types')
 
-test.todo('ncol dataframe')
+test('ncol dataframe', t => {
+  var df = r.dataframe([1,2,3], [4,5,6])
+  var act = r.ncol(df)
+  var exp = 2
+  t.true(r.all(r.is_equal(act, exp)))
+})
 
-test.todo('ncol matrix')
+test('ncol matrix', t => {
+  var mat = [ [1,2], [1,2] ]
+  var act = r.ncol(mat)
+  var exp = 2
+  t.true(r.all(r.is_equal(act, exp)))
+})
 
 test.todo('ncol fails for unsupported types')
 
@@ -370,14 +679,53 @@ test.todo('ncol fails for unsupported types')
 
 /**************************** DATA MANIPULATION *****************************/
 
-test.todo('zip 2 vectors')
+test('zip 2 vectors', t => {
+  var x = [ 1,2,3 ]
+  var y = [ 4,5,6 ]
+  var act = r.zip(x,y)
+  var exp = [[1,4],[2,5],[3,6]]
+  t.true(r.all(r.is_equal_cols(act, exp)))
+})
 
-test.todo('zip 3 vectors')
+test('zip 3 vectors', t => {
+  var x = [ 1,2,3 ]
+  var y = [ 4,5,6 ]
+  var z = [ 7,8,9 ]
+  var act = r.zip(x,y,z)
+  var exp = [[1,4,7],[2,5,8],[3,6,9]]
+  t.true(r.all(r.is_equal_cols(act, exp)))
+})
 
+test('expand_grid same as cartesian product for 2 sets', t => {
+  var a = [ 1,2,3 ]
+  var b = [ 4,5,6 ]
+  var act = r.expand_grid(a,b)
+  var exp = [[1,4],[2,4],[3,4],
+             [1,5],[2,5],[3,5],
+             [1,6],[2,6],[3,6]]
+  t.true(r.all(r.is_equal_cols(act, exp)))
+})
 
-test.todo('expand_grid same as cartesian product for 2 sets')
-test.todo('expand_grid same as cartesian product for 2 sets with duplicates')
-test.todo('expand_grid for 3 sets')
+test('expand_grid same as cartesian product for 2 sets with duplicates', t => {
+  var a = [ 1,1,2 ]
+  var b = [ 1,2,3 ]
+  var act = r.expand_grid(a,b)
+  var exp = [[1,1],[1,1],[2,1],
+             [1,2],[1,2],[2,2],
+             [1,3],[1,3],[2,3]]
+  t.true(r.all(r.is_equal_cols(act, exp)))
+})
+
+// TODO: Do we support 3 sets?
+test('expand_grid for 3 sets', t => {
+  var a = [ 1,2 ]
+  var b = [ 3,4 ]
+  var c = [ 5,6 ]
+  var act = r.expand_grid(a,b,c)
+  var exp = [
+            ]
+  t.true(1 == 1)
+})
 
 test.todo('paste single vector, collapsing to string')
 test.todo('paste multiple vectors, using sep')

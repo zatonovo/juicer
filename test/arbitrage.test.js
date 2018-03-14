@@ -261,24 +261,12 @@ test('is_equal 1', t => {
   t.true(r.all(exp) == true)
 })
 
-// TODO: I'm having trouble with checking for errors using AVA
-// test.todo('is_equal throws error with mismatched lengths')
 test('is_equal throws error with mismatched lengths', t => {
-
-  //var err = t.throws(() => {
-  //  throw new TypeError("is_equal: Incompatible lengths")
-  //})
-
-  var err = t.throws(() => {
-    throw new Error( "is_equal: Incompatible lengths")
-  }, "is_equal: Incompatible lengths")
-
-  var exp = r.is_equal([1,2], [1,2,3])
-
-  t.is(err.message, exp)
+  var err = t.throws(() => { r.is_equal([1,2], [1,2,3]) })
+  var exp = "is_equal: Incompatible lengths"
+  t.is(err, exp)
 })
 
-// TODO: I have trouble recognizing the task of `is_equal_cols`
 test('is_equal_cols 1', t => {
   var x = [ 1,2 ]
   var y = [ 1,2 ]
@@ -286,7 +274,11 @@ test('is_equal_cols 1', t => {
   t.true(r.all(act) == true)
 })
 
-test.todo('is_equal_cols throws error with mismatched lengths')
+test('is_equal_cols throws error with mismatched lengths', t => {
+  var err = t.throws(() => r.is_equal_cols([1,2], [1,2,3]))
+  var exp = "is_equal_cols: Incompatible lengths"
+  t.is(err, exp)
+})
 
 test('setdiff 1', t => {
   var a = r.seq(3)
@@ -670,7 +662,7 @@ test('nrow fails for unsupported types', t => {
   var list = [ 1,2,3,4 ]
   var act = r.nrow(list)
   var exp = undefined
-  t.true(r.all(r.is_equal(act, exp)))
+  t.is(act,exp)
 })
 
 test('ncol dataframe', t => {
@@ -688,6 +680,7 @@ test('ncol matrix', t => {
   t.true(r.all(r.is_equal(act, exp)))
 })
 
+// TODO: same as todo above. works for list, matrices, and literals too
 test.todo('ncol fails for unsupported types')
 
 
@@ -756,7 +749,7 @@ test('paste multiple vectors, using sep', t => {
   var vec = [ a,b ]
   var act = r.paste(vec, ' ')
   var exp = "humpty,dumpty sat,on,the,wall"
-  t.true(act == exp)
+  t.is(act,exp)
 })
 
 
@@ -775,11 +768,15 @@ test('rbind dataframes no rownames/colnames', t => {
 // TODO: How is this used? I'm getting undefined for dataframes
 //       I'm good using this for matrices
 test('cbind 1', t => {
-  var df_names = r.dataframe(['tay','cortana','alexa','sophia'],
-    ['F','F','F','F'],{colnames: ['name','sex']})
-  var df_age = r.dataframe([1,3,5,3], {colnames:['age']})
-  t.true(1==1)
+  var a = [ 1,2,3 ]
+  var b = [ 4,5,6 ]
+  var act = r.cbind(a,b)
+  var exp = { 0:[1,2,3], 1:[4,5,6], rownames:[0,1,2] }
+  t.true(r.all(r.map(r.rkeys(act),
+    key => r.all(r.is_equal(act[key],exp[key])))))
 })
+
+test.todo('cbind dataframe')
 
 
 /******************************* DATA AGGREGATION ***************************/
@@ -793,9 +790,16 @@ test('table 1 vector', t => {
     key => r.all(r.is_equal(act[key],exp[key])))))
 })
 
-// TODO: List of two vectors?
-test.todo('table 2 vectors')
+test('table 2 vectors', t => {
+  var kinds = ["dog","cat","sheep","cat"]
+  var sex = ["F","M","F","F"]
+  var act = r.table(kinds,sex)
+  var exp = { F:[1,1,1], M:[0,1,0], rownames:['dog','cat','sheep'] }
+  t.true(r.all(r.map(r.rkeys(act),
+    key => r.all(r.is_equal(act[key],exp[key])))))
+})
 
+//test.todo('table two rows in dataframe')
 
 
 // ADD MORE TEST CASES

@@ -113,7 +113,6 @@ test('mapply 3 args', t => {
 
 // ADD MORE TEST CASES
 // TODO: What is `acc`?
-//       r.sum only calculates the sum of the 1st parameter
 test('fold 1', t => {
   var vec = r.seq(1,10)
   var act = r.fold(vec, (x,y) => x + y, true)
@@ -211,7 +210,6 @@ test('order increasing ints', t => {
 })
 
 
-// ADD MORE TEST CASES
 test('order decreasing ints', t => {
   var x = [ 13,12,15,22,19,11 ]
   var act = r.order(x, true)
@@ -219,6 +217,8 @@ test('order decreasing ints', t => {
   t.true(r.all(r.is_equal(act,exp)))
 })
 
+test.todo('order all negative nums')
+test.todo('order all the same')
 
 
 // ADD MORE TEST CASES
@@ -228,6 +228,11 @@ test('unique', t => {
   var exp = [5,6,4,7,3,2]
   t.true(r.all(r.is_equal(act,exp)))
 })
+
+test.todo('unique all the same')
+test.todo('unique empty vector')
+test.todo('unique list of lists')
+test.todo('unique matrix')
 
 
 
@@ -420,6 +425,11 @@ test('cartesian product 1', t => {
   t.true(r.all(r.is_equal_cols(act,exp)))
 })
 
+test.todo('cartesian product two equal length vectors')
+test.todo('cartesian product vector a smaller than vector b')
+test.todo('cartesian product one empty vector and one non-empty vector')
+test.todo('cartesian product of two char vectors')
+
 
 
 /******************************** SUBSETTING ********************************/
@@ -486,6 +496,9 @@ test('select vector using predicate', t => {
   t.true(r.all(r.is_equal(act, exp)))
 })
 
+test.todo('select vector using static boolean vector')
+test.todo('select vector with empty input vector')
+
 
 test('partition vector semi-ordered', t => {
   var x = [ 1,2,3,4,5,6 ]
@@ -517,6 +530,7 @@ test('partition dataframe', t => {
   r.map(r.seq(r.length(exp)),
     i => t.true(r.all(r.is_equal_cols(act[i],exp[i]))) )
 })
+
 
 
 
@@ -681,7 +695,6 @@ test('ncol dataframe', t => {
   t.true(r.all(r.is_equal(act, exp)))
 })
 
-// TODO: ncol works for list, matrices, and literals
 test('ncol matrix', t => {
   var mat = [ [1,2], [1,2] ]
   var act = r.ncol(mat)
@@ -689,7 +702,7 @@ test('ncol matrix', t => {
   t.true(r.all(r.is_equal(act, exp)))
 })
 
-// TODO: same as todo above. works for list, matrices, and literals too
+// TODO: same as todo above. works for list, dataframe, matrices, and literals too
 test.todo('ncol fails for unsupported types')
 
 
@@ -808,7 +821,7 @@ test('table 2 vectors', t => {
     key => r.all(r.is_equal(act[key],exp[key])))))
 })
 
-//test.todo('table two rows in dataframe')
+test.todo('table two rows in dataframe')
 
 
 // ADD MORE TEST CASES
@@ -884,3 +897,5 @@ test.todo('runif 1')
 
 
 /******************************* DATE / TIME ********************************/
+// ADD TESTS
+test.todo('sys_date 1')

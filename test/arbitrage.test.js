@@ -112,10 +112,9 @@ test('mapply 3 args', t => {
 })
 
 // ADD MORE TEST CASES
-// TODO: What is `acc`?
 test('fold 1', t => {
   var vec = r.seq(1,10)
-  var act = r.fold(vec, (x,y) => x + y, true)
+  var act = r.fold(vec, (x,y) => x + y, 0)
   var exp = 56
   t.is(act,exp)
 })
@@ -132,8 +131,6 @@ test('filter 1', t => {
   t.true(r.all(r.is_equal(act, exp)))
 })
 
-test.todo('filter using predicate acc false')
-test.todo('filter using predicate acc true')
 test.todo('filter vector with strings')
 test.todo('filter a dataframe')
 test.todo('filter using a json list of objects')

@@ -845,16 +845,42 @@ test('by using single index', t => {
 
 /*************************** UNARY MATH FUNCTIONS **************************/
 // ADD TESTS
-
+test.todo('log 1')
+test.todo('log10 1')
+test.todo('round 1')
+test.todo('floor 1')
+test.todo('ceiling 1')
+test.todo('sum 1')
+test.todo('prod 1')
+test.todo('diff 1')
+test.todo('cumsum 1')
+test.todo('cumprod 1')
+test.todo('colsums 1')
+test.todo('rowsums 1')
 
 /************************** BINARY MATH FUNCTIONS **************************/
 // ADD TESTS
-
+test.todo('add 1')
+test.todo('subtract 1')
+test.todo('multiply 1')
+test.todo('divide 1')
+test.todo('pow 1')
+test.todo('sqrt 1')
+test.todo('inner_product 1')
 
 /******************************** STATISTICS ********************************/
 // ADD TESTS
+test.todo('min 1')
+test.todo('max 1')
+test.todo('maxdiff 1')
+test.todo('mean 1')
 
 
 /******************************* PROBABILITY ********************************/
 // ADD TESTS
 
+test.todo('sample 1')
+test.todo('runif 1')
+
+
+/******************************* DATE / TIME ********************************/

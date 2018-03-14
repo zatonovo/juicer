@@ -99,14 +99,12 @@ test('mapply 2 args', t => {
   t.true(r.all(r.is_equal(act,exp)))
 })
 
-// TODO: Perhaps a more realistic test case?
 test('mapply 2 args with recycling', t => {
   var act = r.mapply([1,2,3], [4,4,5,5,6,6], (a,b) => a + b)
   var exp = [5,6,8,6,8,9]
   t.true(r.all(r.is_equal(act,exp)))
 })
 
-// TODO: Perhaps a more realistic test case?
 test('mapply 3 args', t => {
   var act = r.mapply([1,2,3], [1,1,1], [2,2,2], (a, b, c) => a + b + c)
   var exp = [4,5,6]
@@ -120,8 +118,12 @@ test('fold 1', t => {
   var vec = r.seq(1,10)
   var act = r.fold(vec, (x,y) => x + y, true)
   var exp = 56
-  t.true(r.all(r.is_equal(act, exp)))
+  t.is(act,exp)
 })
+
+test.todo('fold vector of strings')
+test.todo('fold column of dataframe')
+test.todo('fold unaccepted data types')
 
 // ADD MORE TEST CASES
 test('filter 1', t => {
@@ -130,6 +132,13 @@ test('filter 1', t => {
   var exp = [1,2]
   t.true(r.all(r.is_equal(act, exp)))
 })
+
+test.todo('filter using predicate acc false')
+test.todo('filter using predicate acc true')
+test.todo('filter vector with strings')
+test.todo('filter a dataframe')
+test.todo('filter using a json list of objects')
+test.todo('filter matrix')
 
 
 

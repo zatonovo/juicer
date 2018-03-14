@@ -1,6 +1,6 @@
 import test from 'ava'
 import * as r from '../arbitrage.js'
-
+// lala
 
 /******************************* CORE FUNCTIONS *****************************/
 test('vectorize 1', t => {

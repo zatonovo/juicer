@@ -878,6 +878,21 @@ test.todo('pow 1')
 test.todo('sqrt 1')
 test.todo('inner_product 1')
 
+/************************** TRIGONOMENTRIC FUNCTIONS **************************/
+// ADD TESTS
+test.todo('cos 1')
+test.todo('sin 1')
+test.todo('tan 1')
+test.todo('cosh 1')
+test.todo('sinh 1')
+test.todo('tanh 1')
+test.todo('acos 1')
+test.todo('asin 1')
+test.todo('atan 1')
+test.todo('acosh 1')
+test.todo('asinh 1')
+test.todo('atanh 1')
+
 /******************************** STATISTICS ********************************/
 // ADD TESTS
 test.todo('min 1')

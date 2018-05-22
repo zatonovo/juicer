@@ -253,7 +253,6 @@ test('any no true', t => {
 
 test.todo('any all true')
 
-// TODO: Currently undefined behavior. Need to define before testing.
 test('any empty vector', t => {
   var x = [  ]
   t.false(r.any(x))
@@ -637,11 +636,18 @@ test('dataframe two col named rows and cols', t => {
   t.true(r.all(r.map(r.rkeys(exp), key => r.all(r.is_equal(act[key], exp[key])))))
 })
 
-test('is_dataframe', t => {
+test('is_dataframe 2 cols', t => {
   var df = { rownames:['a','b','c'], x:[1,2,3], y:[7,8,9] }
   var act = r.is_dataframe(df)
   var exp = true
-  t.true(act == exp)
+  t.is(act,exp)
+})
+
+test('is_dataframe 1 col', t => {
+  var df = { rownames:['a','b','c'], x:[1,2,3] }
+  var act = r.is_dataframe(df)
+  var exp = true
+  t.is(act,exp)
 })
 
 test('is_dataframe is false for vector', t => {

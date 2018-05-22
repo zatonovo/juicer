@@ -586,9 +586,20 @@ test('t matrix', t => {
   t.true(r.all(r.is_equal_cols(act,exp)))
 })
 
-test.todo('t JSON list of records')
+test('t JSON list of records should return `undefined`', t => {
+  var records = [
+    {"name": "spotty", "type": "cat"},
+    {"name": "chabilita", "type": "dog"},
+    {"name": "perkins", "type": "hamster"},
+    {"name": "chris", "type": "cow"}
+  ]
+  var act = r.t(records)
+  var exp = [ 
+    [undefined, undefined, undefined, undefined]
+  ]
+  t.true(r.all(r.is_equal_cols(act,exp)))
+})
 
-// TODO: Cannot read property of 'length' undefined
 // Ensure row names and column names are swapped
 test.todo('t dataframe')
 
@@ -640,7 +651,18 @@ test('is_dataframe is false for vector', t => {
   t.true(r.all(r.is_equal(act, exp)))
 })
 
-test.todo('is_dataframe is false for JSON list of records')
+test('is_dataframe is false for JSON list of records', t => {
+  var records = [
+    {"name": "spotty", "type": "cat"},
+    {"name": "chabilita", "type": "dog"},
+    {"name": "perkins", "type": "hamster"},
+    {"name": "chris", "type": "cow"}
+  ]
+  var act = r.is_dataframe(records)
+  var exp = false
+
+  t.is(act,exp)
+})
 test.todo('is_dataframe is false for scalar')
 
 test('rownames for 2 row, 2 col dataframe', t => {

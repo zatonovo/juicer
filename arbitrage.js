@@ -961,6 +961,7 @@ if (typeof exports !== 'undefined') {
   exports.select = select
   exports.which = which
   exports.partition = partition
+  exports.is_matrix = is_matrix
   exports.t = t
 
   exports.dataframe = dataframe

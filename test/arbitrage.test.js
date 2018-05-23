@@ -53,7 +53,7 @@ test('recycle 3 args', t => {
 
 
 /****************************** VECTORIZATION *******************************/
-test('tapply vector given an int vector index', t => {
+test('tapply a vector given an int vector index', t => {
   var x = [ 1,2,3,4,5 ]
   var y = [ 1,1,2,2,2 ]
   var act = r.tapply(x,y, r.sum)
@@ -61,7 +61,7 @@ test('tapply vector given an int vector index', t => {
   t.true(r.all(r.is_equal(act,exp)))
 })
 
-test('tapply vector given a char vector index', t => {
+test('tapply a vector given a char vector index', t => {
   var x = [ 1,2,3,4,5 ]
   var y = [ 'a','a', 'b','b','b' ]
   var act = r.tapply(x,y, r.sum)
@@ -69,14 +69,14 @@ test('tapply vector given a char vector index', t => {
   t.true(r.all(r.is_equal(act,exp)))
 })
 
-test('tapply dataframe given an int dataframe column index', t => {
+test('tapply a dataframe given an int column from a dataframe as index', t => {
   var df = r.dataframe([1,1,2,2,2], [1,2,3,4,5], {"colnames": ["idx", "num"]})
   var act = r.tapply(df.num, df.idx, r.sum)
   var exp = [ 3, 12 ]
   t.true(r.all(r.is_equal(act,exp)))
 })
 
-test('tapply dataframe given a char dataframe column index', t => {
+test('tapply a dataframe given a char column from a dataframe as index', t => {
   var df = r.dataframe(['a','a','b','b','b'], [1,2,3,4,5], {"colnames": ["idx", "num"]})
   var act = r.tapply(df.num, df.idx, r.sum)
   var exp = [ 3, 12 ]

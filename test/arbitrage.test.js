@@ -53,7 +53,7 @@ test('recycle 3 args', t => {
 
 
 /****************************** VECTORIZATION *******************************/
-test('tapply vector int index', t => {
+test('tapply vector given an int vector index', t => {
   var x = [ 1,2,3,4,5 ]
   var y = [ 1,1,2,2,2 ]
   var act = r.tapply(x,y, r.sum)
@@ -61,7 +61,7 @@ test('tapply vector int index', t => {
   t.true(r.all(r.is_equal(act,exp)))
 })
 
-test('tapply vector char index', t => {
+test('tapply vector given a char vector index', t => {
   var x = [ 1,2,3,4,5 ]
   var y = [ 'a','a', 'b','b','b' ]
   var act = r.tapply(x,y, r.sum)
@@ -69,14 +69,14 @@ test('tapply vector char index', t => {
   t.true(r.all(r.is_equal(act,exp)))
 })
 
-test('tapply dataframe int index', t => {
+test('tapply dataframe given an int dataframe column index', t => {
   var df = r.dataframe([1,1,2,2,2], [1,2,3,4,5], {"colnames": ["idx", "num"]})
   var act = r.tapply(df.num, df.idx, r.sum)
   var exp = [ 3, 12 ]
   t.true(r.all(r.is_equal(act,exp)))
 })
 
-test('tapply dataframe char index', t => {
+test('tapply dataframe given a char dataframe column index', t => {
   var df = r.dataframe(['a','a','b','b','b'], [1,2,3,4,5], {"colnames": ["idx", "num"]})
   var act = r.tapply(df.num, df.idx, r.sum)
   var exp = [ 3, 12 ]
@@ -105,7 +105,7 @@ test('mapply 3 args', t => {
   var b = [ 2,4,6 ]
   var c = [ 5,10,15 ]
 
-  var act = r.mapply(a,b,c, (a, b, c) => a + b + c)
+  var act = r.mapply(a,b,c, (ai, bi, ci) => ai + bi + ci)
   var exp = [8,16,24]
   t.true(r.all(r.is_equal(act, exp)))
 })
@@ -153,13 +153,13 @@ test('seq using from/to', t => {
   t.true(r.all(r.is_equal(act, exp)))
 })
 
-test('seq using from/to/by exact', t => {
+test('seq using from/to/by `to` is a valid divisible of `by`', t => {
   var act = r.seq(0,4,2)
   var exp = [0,2,4]
   t.true(r.all(r.is_equal(act, exp)))
 })
 
-test('seq using from/to/by more than', t => {
+test('seq using from/to/by `to` is more than valid divisible of `by`', t => {
   var act = r.seq(0,4,3)
   var exp = [0,3,6]
   t.true(r.all(r.is_equal(act, exp)))
